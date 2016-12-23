@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:29:38 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/23 18:27:34 by mgautier         ###   ########.fr       */
+/*   Updated: 2016/12/24 00:38:18 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "ft_reader.h"
 #include "libft.h"
 #include "fillit.h"
+#include "ft_transform.h"
 
 void	ft_display_char_lst(t_lst *elem)
 {
@@ -44,10 +45,22 @@ void	ft_display_piece_coord(t_rel_position *piece)
 	}
 }
 
+void	ft_display_tetri(t_tetrimino *tetri)
+{
+		ft_putstr("Tetrimino ");
+		ft_putchar(tetri->identifier);
+		ft_putchar('\n');
+		ft_display_piece_coord(tetri->relative_coordinates);
+		ft_putchar('\n');
+		ft_putstr("Offset : ");
+		ft_display_point(tetri->offset);
+		ft_putchar('\n');
+}
+
 void	ft_display(t_lst *piece)
 {
 	ft_putendl("start of piece");
-	ft_display_piece_coord((t_rel_position*)piece->content);
+	ft_display_tetri((t_tetrimino*)piece->content);
 }
 
 
@@ -56,6 +69,7 @@ int	main(int argc, char **argv)
 	int	fd;
 	t_fifo *piece_lst;
 	t_lst	*pieces;
+	t_lst	*tetris_lst;
 
 	if (argc < 2)
 		return (1);
@@ -65,12 +79,12 @@ int	main(int argc, char **argv)
 	piece_lst = ft_file_reader(fd);
 	if (piece_lst == NULL)
 		return (1);
-	printf("%p begin \n %p end \n", piece_lst->begin_lst, piece_lst->end_lst);
 	f_lstiter(piece_lst->begin_lst, &ft_display_char_lst);
 	if (f_lst_every_valid(piece_lst->begin_lst, &ft_valid_pieces_format) != NULL)
 		return (1);
 	close(fd);
 	pieces = f_lstmap(piece_lst->begin_lst, &ft_transform_into_coord);
-	f_lstiter(pieces, &ft_display);
+	tetris_lst = f_lstmapi(pieces, &ft_trans_tetri);
+	f_lstiter(tetris_lst, &ft_display);
 	return (0);
 }
