@@ -6,17 +6,14 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:29:38 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/24 00:38:18 by                  ###   ########.fr       */
+/*   Updated: 2016/12/27 16:29:55 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include "ft_reader.h"
-#include "libft.h"
+#include "ft_parser.h"
 #include "fillit.h"
-#include "ft_transform.h"
+#include "libft.h"
+#include <unistd.h>
 
 void	ft_display_char_lst(t_lst *elem)
 {
@@ -66,25 +63,13 @@ void	ft_display(t_lst *piece)
 
 int	main(int argc, char **argv)
 {
-	int	fd;
-	t_fifo *piece_lst;
-	t_lst	*pieces;
 	t_lst	*tetris_lst;
 
-	if (argc < 2)
+	if (argc != 2)
 		return (1);
-	fd = open(argv[1], O_RDONLY);
-	if (fd <= 0)
+	tetris_lst = ft_parser(argv[1]);
+	if (tetris_lst == NULL)
 		return (1);
-	piece_lst = ft_file_reader(fd);
-	if (piece_lst == NULL)
-		return (1);
-	f_lstiter(piece_lst->begin_lst, &ft_display_char_lst);
-	if (f_lst_every_valid(piece_lst->begin_lst, &ft_valid_pieces_format) != NULL)
-		return (1);
-	close(fd);
-	pieces = f_lstmap(piece_lst->begin_lst, &ft_transform_into_coord);
-	tetris_lst = f_lstmapi(pieces, &ft_trans_tetri);
 	f_lstiter(tetris_lst, &ft_display);
 	return (0);
 }
