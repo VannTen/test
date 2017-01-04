@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:29:38 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/03 16:43:18 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/04 12:54:49 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv)
 		file_to_read = STDIN_FILENO;
 	else
 		file_to_read = open(argv[1], O_RDONLY);
-	while (get_next_line(file_to_read, &line) != 0)
+	while (get_next_line(file_to_read, &line) == 1)
 	{
 		ft_putendl(line);
 		ft_strdel(&line);
