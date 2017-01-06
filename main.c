@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:29:38 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/27 16:29:55 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/06 16:25:07 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ void	ft_display_point(t_rel_position *point)
 	ft_putchar(',');
 	ft_putstr("y: ");
 	ft_putnbr(point->y);
+}
+
+void	ft_display_offset(t_offset *offset)
+{
+	ft_display_point((t_rel_position*)offset);
+	ft_putstr(",minus x : ");
+	ft_putnbr(offset->minus_x);
 }
 
 void	ft_display_piece_coord(t_rel_position *piece)
@@ -50,7 +57,7 @@ void	ft_display_tetri(t_tetrimino *tetri)
 		ft_display_piece_coord(tetri->relative_coordinates);
 		ft_putchar('\n');
 		ft_putstr("Offset : ");
-		ft_display_point(tetri->offset);
+		ft_display_offset(tetri->offset);
 		ft_putchar('\n');
 }
 
