@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:29:38 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/31 17:47:30 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/02/01 12:09:27 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@
 #include "ft_types.h"
 #include <stdlib.h>
 
-void	display_conversion(t_conversion *conversion)
+void	display_conversion(void *_conversion)
 {
 	size_t index_flags;
+	t_conversion *conversion;
 
+	conversion = _conversion;
 	index_flags = 0;
 	printf("Required argument is index %d\n", conversion->arg_index);
 	while (index_flags < FLAGS_NBR)
@@ -37,24 +39,13 @@ void	display_conversion(t_conversion *conversion)
 int	main(int argc, char **argv)
 {
 	size_t	index;
-	t_format_string	format;
-	t_conversion	*conversion;
+	t_format_string	*conv_list;
 
+	if (argc != 2)
+		return (1);
 	index = 0;
-	printf("Type_nbr : %d\n", UNKNOWN_CONVERSION);
-	while (index <= UNKNOWN_CONVERSION)
-	{
-		printf("type is : %c\n", g_types[index]);
-		index++;
-	}
 	printf("Check arg test : %s \n", argv[1]);
-	(void)argc;
-	index = 0;
-	format.arg_count = 0;
-	format.conversion_list = f_fifo_create();
-	format.string = argv[1];
-	index = parser(format.string, index, &format);
-	conversion = f_fifo_take(format.conversion_list);
-	display_conversion(conversion);
-
+	conv_list = ft_format_string_parser(argv[1]);
+	f_lstiter_content (conv_list->conversion_list->begin_lst, &display_conversion);
+	return (0);
 }
