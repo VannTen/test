@@ -6,14 +6,14 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:29:38 by mgautier          #+#    #+#             */
-/*   Updated: 2017/02/01 12:09:27 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/02/23 12:50:15 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "conversion_defs.h"
+#include "format_string_defs.h"
+#include "libft.h"
 #include <stdio.h>
-#include "ft_conversion_specifier.h"
-#include "ft_types.h"
 #include <stdlib.h>
 
 void	display_conversion(void *_conversion)
@@ -33,7 +33,7 @@ void	display_conversion(void *_conversion)
 	printf("Field width is %d and is an arg : %d\n", conversion->field_width.value, conversion->field_width.is_arg);
 	printf("Precision is %d and is an arg : %d\n", conversion->precision.value, conversion->precision.is_arg);
 	printf("Lenght modifier is %c (%d)\n", g_length_modifier[conversion->length_modifier], conversion->length_modifier);
-	printf("Conversion type is %c (%d)\n", g_types[conversion->type], conversion->type);
+	printf("Conversion type is %c (%d)\n", g_conv_types[conversion->type], conversion->type);
 }
 
 int	main(int argc, char **argv)
