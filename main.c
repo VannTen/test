@@ -6,46 +6,43 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:29:38 by mgautier          #+#    #+#             */
-/*   Updated: 2017/02/23 12:50:15 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/02/24 17:13:12 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "conversion_defs.h"
 #include "format_string_defs.h"
+#include "variadic_args_defs.h"
 #include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
+#include <stdarg.h>
 
-void	display_conversion(void *_conversion)
+int		ft_printf(const char *format_string, ...);
+void	display_conversion(void *_conversion);
+void	display_format_string_conv(const char *format_string);
+#define VAR(X, Y) fomt->arg_list[X].parameter.Y
+void	test_printf(const char *fmt, ...)
 {
-	size_t index_flags;
-	t_conversion *conversion;
+	va_list ap;
+	t_format_string *fomt;
 
-	conversion = _conversion;
-	index_flags = 0;
-	printf("Required argument is index %d\n", conversion->arg_index);
-	while (index_flags < FLAGS_NBR)
-	{
-		printf("Flags %c is set to %d\n", g_flags[index_flags],
-				conversion->flags[index_flags]);
-		index_flags++;
-	}
-	printf("Field width is %d and is an arg : %d\n", conversion->field_width.value, conversion->field_width.is_arg);
-	printf("Precision is %d and is an arg : %d\n", conversion->precision.value, conversion->precision.is_arg);
-	printf("Lenght modifier is %c (%d)\n", g_length_modifier[conversion->length_modifier], conversion->length_modifier);
-	printf("Conversion type is %c (%d)\n", g_conv_types[conversion->type], conversion->type);
+	fomt = ft_format_string_parser(fmt);
+	f_lstiter_content(fomt->conversion_list->begin_lst, &display_conversion);
+	va_start(ap, fmt);
+	fomt->arg_list = ft_get_var_args(fomt->conversion_list, &ap);
+	va_end(ap);
+	printf("Mine\n");
+	ft_putendl(VAR(1, t_ptr_char));
+	printf(fmt, VAR(0, t_int), VAR(1, t_ptr_char), VAR(2, t_int));
+	va_start(ap, fmt);
+	printf("True printf\n");
+	vprintf(fmt, ap);
+	va_end(ap);
 }
-
-int	main(int argc, char **argv)
+int	main()
 {
-	size_t	index;
-	t_format_string	*conv_list;
-
-	if (argc != 2)
-		return (1);
-	index = 0;
-	printf("Check arg test : %s \n", argv[1]);
-	conv_list = ft_format_string_parser(argv[1]);
-	f_lstiter_content (conv_list->conversion_list->begin_lst, &display_conversion);
+	test_printf("%c\n%s\n%d\n", 'w', "gesges", 23);
 	return (0);
 }
+
