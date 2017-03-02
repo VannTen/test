@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 16:13:54 by mgautier          #+#    #+#             */
-/*   Updated: 2017/02/24 16:38:43 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/03/02 18:55:29 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,7 @@ void	display_conversion(void *_conversion)
 	printf("Conversion type is %c (%d)\n", g_conv_types[conversion->type], conversion->type);
 }
 
-void	display_format_string_conv(const char *format_string)
+void	display_format_string_conv(t_format_string *fmt)
 {
-	size_t	index;
-	t_format_string	*conv_list;
-
-	index = 0;
-	printf("Check arg test : %s \n", format_string);
-	conv_list = ft_format_string_parser(format_string);
-	f_lstiter_content(conv_list->conversion_list->begin_lst, &display_conversion);
+	f_lstiter_content(fmt->conversion_list->begin_lst, &display_conversion);
 }

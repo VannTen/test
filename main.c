@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:29:38 by mgautier          #+#    #+#             */
-/*   Updated: 2017/03/01 15:24:27 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/03/02 18:26:45 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,15 @@ int		ft_printf(const char *format_string, ...);
 void	display_conversion(void *_conversion);
 void	display_format_string_conv(const char *format_string);
 #define VAR(X, Y) fomt->arg_list[X].parameter.Y
+int	main()
+{
+	int test;
+	printf("Temoin : %zu\n", sizeof(UNSUPPORTED_CONVERSION_STRING));
+	test = ft_printf("This line is before the first%dthis line is between%dthis line is after", 50, 50);
+	printf("test : %d\n", test);
+	return (0);
+}
+
 /*
 void	test_printf(const char *fmt, ...)
 {
@@ -43,12 +52,3 @@ void	test_printf(const char *fmt, ...)
 	va_end(ap);
 }
 */
-int	main()
-{
-	int test;
-	printf("Temoin : %zu\n", sizeof(UNSUPPORTED_CONVERSION_STRING));
-	test = ft_printf("This line is before the first%dthis line is between%dthis line is after", 50, 50);
-	printf("test : %d\n", test);
-	return (0);
-}
-
