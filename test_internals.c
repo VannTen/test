@@ -6,19 +6,27 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 18:27:01 by mgautier          #+#    #+#             */
-/*   Updated: 2017/03/02 19:09:10 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/03/03 17:29:09 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "format_string_interface.h"
 #include "display.h"
 #include <stdarg.h>
+#include <stdio.h>
 
 void	test_format_string_prod(const char *fmt, ...);
 
-int main(void)
+int main(int argc, char **argv)
 {
-	test_format_string_prod("%1$*1$.*1$d", 32, 25, 52);
+	char *fmt;
+
+	if (argc != 2)
+			fmt = "%1$*1$.*1$d";
+	else
+			fmt = argv[1];
+	printf("%s\n",fmt);
+	test_format_string_prod(fmt, 32, 25, 52);
 }
 
 void	test_format_string_prod(const char *fmt, ...)
@@ -30,5 +38,6 @@ void	test_format_string_prod(const char *fmt, ...)
 	parsed = ft_full_fmt(fmt, &ap);
 	va_end(ap);
 	display_format_string_conv(parsed);
+	fmt_destroy(parsed);
 }
 
