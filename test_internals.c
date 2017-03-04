@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 18:27:01 by mgautier          #+#    #+#             */
-/*   Updated: 2017/03/03 17:29:09 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/03/04 14:35:40 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	test_format_string_prod(const char *fmt, ...)
 	parsed = ft_full_fmt(fmt, &ap);
 	va_end(ap);
 	display_format_string_conv(parsed);
+	printf("%zu\n", ft_get_resulting_length(parsed));
 	fmt_destroy(parsed);
 }
 
