@@ -6,36 +6,36 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 18:27:01 by mgautier          #+#    #+#             */
-/*   Updated: 2017/03/06 14:12:40 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/03/06 18:26:13 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "format_string_interface.h"
 #include "display.h"
+#include "test_printf.h"
 #include "libft.h"
 #include <stdarg.h>
 #include <stdio.h>
 
-void	test_format_string_prod(const char *fmt, ...);
-
-static char	*produce_long_fmt(size_t conv_number)
+char	*produce_long_fmt(char *text, size_t repeat)
 {
 	char	*fmt;
-	char	conv[] = "%w";
 	size_t	count;
+	size_t	text_length;
 
 	count = 0;
-	fmt = malloc( conv_number * sizeof(char) * (sizeof(conv) -1) + 1);
-	while (count < conv_number)
+	text_length = ft_strlen(text);
+	fmt = malloc(repeat * sizeof(char) * text_length + 1);
+	while (count < repeat)
 	{
-		ft_strcpy(fmt + (count * (sizeof(conv) - 1)), conv);
+		ft_strcpy(fmt + (count * text_length), text);
 		count++;
 	}
-	fmt[(count - 1) * (sizeof(conv) - 1)] = '\0';
+	fmt[(count - 1) * text_length] = '\0';
 	printf("long fmt is : %s\n", fmt);
 	return (fmt);
 }
-
+/*
 int main(int argc, char **argv)
 {
 	char *fmt;
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 	if (!(argc < 4))
 		long_fmt = argv[3];
 	else
-		long_fmt = produce_long_fmt(50000);
+		long_fmt = produce_long_fmt("ere", 50000);
 	printf("1 %s\n2 %s\n",fmt, fmt_2);
 //	test_format_string_prod(fmt, 32, 25, 52);
 //	test_format_string_prod(fmt_2);
@@ -74,4 +74,5 @@ void	test_format_string_prod(const char *fmt, ...)
 	printf("%zu\n", ft_get_resulting_length(parsed));
 	fmt_destroy(parsed);
 }
+*/
 
