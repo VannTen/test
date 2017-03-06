@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:29:38 by mgautier          #+#    #+#             */
-/*   Updated: 2017/03/02 18:26:45 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/03/06 17:23:50 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ void	display_format_string_conv(const char *format_string);
 int	main()
 {
 	int test;
-	printf("Temoin : %zu\n", sizeof(UNSUPPORTED_CONVERSION_STRING));
-	test = ft_printf("This line is before the first%dthis line is between%dthis line is after", 50, 50);
+	test = ft_printf("This line is before the first%dthis line is between%dthis line is after\n", 50, 58);
 	printf("test : %d\n", test);
 	return (0);
 }
