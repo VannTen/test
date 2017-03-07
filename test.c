@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 17:51:55 by mgautier          #+#    #+#             */
-/*   Updated: 2017/03/01 17:05:40 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/03/07 17:05:26 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <limits.h>
 
 int main(void)
 {
-	char *str;
-	char a;
 	size_t	size;
 
-	a = 'a';
-	size = 8;
-	str = malloc(sizeof(char) * size + 1);
-	if (str == NULL)
-		write(STDOUT_FILENO, &a, 1);
-	else
-		printf("Worsk");
+	size = INT_MAX;
+	size++;
+	printf("%zu\n%d\n", size, INT_MIN);
 	return (0);
 }
