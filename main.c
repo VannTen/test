@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:29:38 by mgautier          #+#    #+#             */
-/*   Updated: 2017/03/06 18:29:08 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/03/07 18:22:24 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	main(int argc, char **argv)
 	fmt = produce_long_fmt(atom, repeat);
 	test = ft_printf(fmt , 50, 58);
 	printf("test : %d\n", test);
+	free(fmt);
 	return (0);
 }
 
