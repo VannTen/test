@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 18:27:01 by mgautier          #+#    #+#             */
-/*   Updated: 2017/03/06 18:26:13 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/03/07 19:18:14 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char	*produce_long_fmt(char *text, size_t repeat)
 		count++;
 	}
 	fmt[(count - 1) * text_length] = '\0';
-	printf("long fmt is : %s\n", fmt);
 	return (fmt);
 }
 /*
