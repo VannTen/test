@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 18:27:01 by mgautier          #+#    #+#             */
-/*   Updated: 2017/03/07 19:18:14 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/03/08 13:45:33 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*produce_long_fmt(char *text, size_t repeat)
 		ft_strcpy(fmt + (count * text_length), text);
 		count++;
 	}
-	fmt[(count - 1) * text_length] = '\0';
+	fmt[(count) * text_length] = '\0';
 	return (fmt);
 }
 /*
