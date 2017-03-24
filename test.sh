@@ -134,10 +134,11 @@ then
 else
 	echo Succed on format string \"${fmt_array[i]}\" with args \(${arg_array[$((i%count_2))]}\)
 fi
-if [ $1 = "debug" ]
+if [ "$1" = "debug" ]
 then
 	echo Debugging
 else
+	echo Test leaks
 	./a.out leaks > /dev/null &
 	sleep 1
 	pid=$!
