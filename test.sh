@@ -121,8 +121,8 @@ for ((i=0;i<=count;i++))
 do
 	echo -e "\nTesting format_string"  \"${fmt_array[i]}\" with args \(${arg_array[$((i%count_2))]}\)
 	if ! $CC $error_flags $debug_flags\
-		-D FMT=\"${fmt_array[i]}\" -D ARG_LIST=${arg_array[$((i%count_2))]} $includelib $search_lib $link_lib\
-		${test_src_file}
+		${test_src_file}\
+		-D FMT=\"${fmt_array[i]}\" -D ARG_LIST=${arg_array[$((i%count_2))]} $includelib $search_lib $link_lib
 then
 	echo Bad compiling format string ${fmt_array[i]} with ${arg_array[$((i%count_2))]}
 	exit 255
