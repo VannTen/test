@@ -179,8 +179,8 @@ function test_normal {
 	echo Arguments = \($2\)
 	echo Locale = \"$3\"
 	if ! $CC $error_flags $debug_flags\
-		-D FMT=\"$1\" -D ARG_LIST=$2 -D MY_LOCALE=\"$3\" $includelib $search_lib $link_lib\
-		${test_src_file}
+		${test_src_file}\
+		-D FMT=\"$1\" -D ARG_LIST=$2 -D MY_LOCALE=\"$3\" $includelib $search_lib $link_lib
 then
 	echo Bad compiling 
 	echo On fmt \"$1\" with args \($2\) and locale $3
