@@ -14,9 +14,9 @@ fmt_array=(\
 '%%%k'
 '%ll%'
 '%%d'
-'%h%'
-'%hh%'
-	'%5d%5d'
+'%lc%'
+'%ls%'
+'%5d%5d'
 '%5o%5o'
 '%5i%5i'
 '%5u%5u'
@@ -30,7 +30,7 @@ fmt_array=(\
 '%5s%5s'
 '%5lc%5lc'
 '%5ls%5ls'
-	'%0+5d%0+5d'
+'%0+5d%0+5d'
 '%0#5o%0#5o'
 '%0+5i%0+5i'
 '%05u%05u'
@@ -156,9 +156,10 @@ arg_array=(\
 	\(void*\)255,\(void*\)0,20,10\
 	\'k\'\,\'k\',20,10\
 	\"string\",\"string\",20,10\
-	L\'й\',L\'й\',20,10\
-	L\"Русский\",L\"Русский\",20,10\
+	L\'文\',L\'ع\',20,10\
+	L\"Русский\",L\"العربية\",20,10\
 	)
+locale_array=( $(locale -a) )
 includelib='-iquote.. -iquote../includes'
 if [ "$1" = "debug" ]
 then
@@ -171,30 +172,32 @@ search_lib=-L..
 link_lib=-lft
 count=${#fmt_array[@]}-1
 count_2=${#arg_array[@]}
+locale_count=${#locale_array[@]}
 
-make $debug_make -C .. -j -l 2.8 || exit 255
-for ((i=0;i<=count;i++))
-do
-	echo -e "\nTesting format_string"  \"${fmt_array[i]}\" with args \(${arg_array[$((i%count_2))]}\)
+function test_normal {
+	echo Format string = \"$1\"
+	echo Arguments = \($2\)
+	echo Locale = \"$3\"
 	if ! $CC $error_flags $debug_flags\
-		-D FMT=\"${fmt_array[i]}\" -D ARG_LIST=${arg_array[$((i%count_2))]} $includelib $search_lib $link_lib\
+		-D FMT=\"$1\" -D ARG_LIST=$2 -D MY_LOCALE=\"$3\" $includelib $search_lib $link_lib\
 		${test_src_file}
 then
-	echo Bad compiling format string ${fmt_array[i]} with ${arg_array[$((i%count_2))]}
+	echo Bad compiling 
+	echo On fmt \"$1\" with args \($2\) and locale $3
 	exit 255
 fi
 if ! diff -aU 3 <(./a.out true) <(./a.out)
 then
-	echo Failed format string \"${fmt_array[i]}\" with \(${arg_array[$((i%count_2))]}\)
+	echo Failed 
+	echo On fmt \"$1\" with args \($2\) and locale $3
 	exit 1
 else
-	echo Succed on format string \"${fmt_array[i]}\" with args \(${arg_array[$((i%count_2))]}\)
+	echo Succed
+	echo On fmt \"$1\" with args \($2\) and locale $3
 fi
-if [ "$1" = "debug" ]
-then
-	echo Debugging
-elif [ "1$" = "leaks" ]
-then
+}
+
+function test_leaks {
 	echo Test leaks
 	./a.out leaks > /dev/null &
 	sleep 1
@@ -207,11 +210,49 @@ then
 		echo No leaks
 	elif [ $leaks = 1 ]
 	then
-		echo format string \"${fmt_array[i]}\" with args \(${arg_array[$((i%count_2))]}\) causes leaks !
+		echo format string \"$1\" with args \($2\) causes leaks !
 		exit 1
 	else
 		echo Error with leaks command
 		exit 255
 	fi
+}
+function all_test {
+	if [ "$1" = "debug" ]
+	then
+		test_normal $2 $3
+		echo Debugging
+	elif [ "$1" = "leaks" ]
+	then
+		test_leaks $2 $3
+	else
+		test_normal $2 $3
+	fi
+}
+
+function test_wide_chars {
+
+	for ((j=0;j<locale_count;j++))
+	do
+		test_normal $1 $2 ${locale_array[j]}
+	done
+}
+
+make $debug_make -C .. -j -l 2.8 || exit 255
+if [ "$1" = "test" ]
+then
+	echo ${count_2}
+	echo $((i%count_2))  $((${count_2} - 2))
+	exit 0
 fi
+for ((i=0;i<=count;i++))
+do
+	test_1=$((i%count_2)) 
+	test_2=$((${count_2} - 2))  
+	if [ "$test_1" -ge "$test_2" ]
+	then
+		test_wide_chars "${fmt_array[i]}" "${arg_array[$((i%count_2))]}"
+	else
+		all_test "$1" "${fmt_array[i]}" "${arg_array[$((i%count_2))]}"
+	fi
 done
