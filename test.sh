@@ -173,11 +173,11 @@ link_lib=-lft
 count=${#fmt_array[@]}-1
 count_2=${#arg_array[@]}
 locale_count=${#locale_array[@]}
+error=0
+error_log_file=error.log
+leaks_log_file=leaks.log
 
 function test_normal {
-	echo Format string = \"$1\"
-	echo Arguments = \($2\)
-	echo Locale = \"$3\"
 	if ! $CC $error_flags $debug_flags\
 		${test_src_file}\
 		-D FMT=\"$1\" -D ARG_LIST=$2 -D MY_LOCALE=\"$3\" $includelib $search_lib $link_lib
@@ -186,14 +186,12 @@ then
 	echo On fmt \"$1\" with args \($2\) and locale $3
 	exit 255
 fi
-if ! diff -aU 3 <(./a.out true) <(./a.out)
+if ! diff -aU 3 <(./a.out true) <(./a.out) >> $error_log_file
 then
-	echo Failed 
-	echo On fmt \"$1\" with args \($2\) and locale $3
-	exit 1
-else
-	echo Succed
-	echo On fmt \"$1\" with args \($2\) and locale $3
+	echo Failed >> $error_log_file
+	echo On fmt \"$1\" with args \($2\) and locale $3 >> $error_log_file
+	error=$((error + 1))
+	mv a.out error.out
 fi
 }
 
@@ -210,8 +208,8 @@ function test_leaks {
 		echo No leaks
 	elif [ $leaks = 1 ]
 	then
-		echo format string \"$1\" with args \($2\) causes leaks !
-		exit 1
+		echo format string \"$1\" with args \($2\) causes leaks ! >> $leaks_log_file
+		leaks_count=$((leaks_count + 1))
 	else
 		echo Error with leaks command
 		exit 255
@@ -221,7 +219,6 @@ function all_test {
 	if [ "$1" = "debug" ]
 	then
 		test_normal $2 $3
-		echo Debugging
 	elif [ "$1" = "leaks" ]
 	then
 		test_leaks $2 $3
@@ -245,6 +242,7 @@ then
 	echo $((i%count_2))  $((${count_2} - 2))
 	exit 0
 fi
+rm $error_log_file
 for ((i=0;i<=count;i++))
 do
 	test_1=$((i%count_2)) 
@@ -256,3 +254,11 @@ do
 		all_test "$1" "${fmt_array[i]}" "${arg_array[$((i%count_2))]}"
 	fi
 done
+if [ "$error" -ne "0" ]
+then
+	echo $error failed tests
+	exit 1
+else
+	echo All test passed !
+	exit 0
+fi
