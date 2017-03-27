@@ -86,22 +86,36 @@ fmt_array=(\
 'dsada%#0+20.0sdesdesdsada%#0+20.0sdesdes'
 'dsada%#0+20.0lcdesdesdsada%#0+20.0lcdesdes'
 'dsada%#0+20.0lsdesdesdsada%#0+20.0lsdesdes'
+'Preci:%$4dField:%$3d%2$*3$.*4$dPreci:%$4dField:%$4d%1$*4$.*3$d'
+'Preci:%$4dField:%$3d%2$*3$.*4$oPreci:%$4dField:%$4d%1$*4$.*3$o'
+'Preci:%$4dField:%$3d%2$*3$.*4$iPreci:%$4dField:%$4d%1$*4$.*3$i'
+'Preci:%$4dField:%$3d%2$*3$.*4$uPreci:%$4dField:%$4d%1$*4$.*3$u'
+'Preci:%$4dField:%$3d%2$*3$.*4$xPreci:%$4dField:%$4d%1$*4$.*3$x'
+'Preci:%$4dField:%$3d%2$*3$.*4$XPreci:%$4dField:%$4d%1$*4$.*3$X'
+'Preci:%$4dField:%$3d%2$*3$.*4$DPreci:%$4dField:%$4d%1$*4$.*3$D'
+'Preci:%$4dField:%$3d%2$*3$.*4$UPreci:%$4dField:%$4d%1$*4$.*3$U'
+'Preci:%$4dField:%$3d%2$*3$.*4$OPreci:%$4dField:%$4d%1$*4$.*3$O'
+'Preci:%$4dField:%$3d%2$*3$.*4$pPreci:%$4dField:%$4d%1$*4$.*3$p'
+'Preci:%$4dField:%$3d%2$*3$.*4$cPreci:%$4dField:%$4d%1$*4$.*3$c'
+'Preci:%$4dField:%$3d%2$*3$.*4$sPreci:%$4dField:%$4d%1$*4$.*3$s'
+'Preci:%$4dField:%$3d%2$*3$.*4$lcPreci:%$4dField:%$4d%1$*4$.*3$lc'
+'Preci:%$4dField:%$3d%2$*3$.*4$sPreci:%$4dField:%$4d%1$*4$.*3$s'
 )
 arg_array=(\
-	15,45\
-	15,45\
-	15,45\
-	15,45\
-	15,45\
-	15,45\
-	15,45\
-	15,45\
-	15,45\
-	\(void*\)255,\(void*\)0\
-	\'k\'\,\'k\'\
-	\"string\",\"string\"\
-	L\'й\',L\'й\'\
-	L\"Русский\",L\"Русский\"\
+	-150000,45,20,10\
+	15,0,20,10\
+	1590090,45,-20,10\
+	15,489895,20,10\
+	15,0,20,10\
+	15,489665,-20,10\
+	158976,45,-20,10\
+	158989,45,20,-10\
+	15,4898765,20,10\
+	\(void*\)255,\(void*\)0,20,10\
+	\'k\'\,\'k\',20,10\
+	\"string\",\"string\",20,10\
+	L\'й\',L\'й\',20,10\
+	L\"Русский\",L\"Русский\",20,10\
 	)
 includelib='-iquote.. -iquote../includes'
 if [ "$1" = "debug" ]
@@ -129,7 +143,7 @@ then
 fi
 if ! diff -U 3 <(./a.out true) <(./a.out)
 then
-	echo Failed format string ${fmt_array[i]} with ${arg_array[$((i%count_2))]}
+	echo Failed format string \"${fmt_array[i]}\" with \(${arg_array[$((i%count_2))]}\)
 	exit 1
 else
 	echo Succed on format string \"${fmt_array[i]}\" with args \(${arg_array[$((i%count_2))]}\)
@@ -137,7 +151,8 @@ fi
 if [ "$1" = "debug" ]
 then
 	echo Debugging
-else
+elif [ "1$" = "leaks" ]
+then
 	echo Test leaks
 	./a.out leaks > /dev/null &
 	sleep 1
