@@ -159,7 +159,7 @@ arg_array=(\
 	L\'文\',L\'ع\',20,10\
 	L\"Русский\",L\"العربية\",20,10\
 	)
-locale_array=( $(locale -a) )
+#locale_array=( $(locale -a) )
 includelib='-iquote.. -iquote../includes'
 if [ "$1" = "debug" ]
 then
@@ -172,27 +172,30 @@ search_lib=-L..
 link_lib=-lft
 count=${#fmt_array[@]}-1
 count_2=${#arg_array[@]}
-locale_count=${#locale_array[@]}
+#locale_count=${#locale_array[@]}
 error=0
 error_log_file=error.log
 leaks_log_file=leaks.log
 
-function test_normal {
+function compile {
 	if ! $CC $error_flags $debug_flags\
 		${test_src_file}\
-		-D FMT=\"$1\" -D ARG_LIST=$2 -D MY_LOCALE=\"$3\" $includelib $search_lib $link_lib
+		-D FMT=\"$1\" -D ARG_LIST=$2 $includelib $search_lib $link_lib
 then
 	echo Bad compiling 
-	echo On fmt \"$1\" with args \($2\) and locale $3
+	echo On fmt \"$1\" with args \($2\)
 	exit 255
 fi
-if ! diff -aU 3 <(./a.out true) <(./a.out) >> $error_log_file
-then
-	echo Failed >> $error_log_file
-	echo On fmt \"$1\" with args \($2\) and locale $3 >> $error_log_file
-	error=$((error + 1))
-	mv a.out error.out
-fi
+}
+
+function test_normal {
+	if ! diff -aU 3 <(./a.out true $3) <(./a.out false $3) >> $error_log_file
+	then
+		echo Failed >> $error_log_file
+		echo On fmt \"$1\" with args \($2\) >> $error_log_file
+		error=$((error + 1))
+		mv a.out error.out
+	fi
 }
 
 function test_leaks {
@@ -218,21 +221,20 @@ function test_leaks {
 function all_test {
 	if [ "$1" = "debug" ]
 	then
-		test_normal $2 $3
+		test_normal $2 $3 $4
 	elif [ "$1" = "leaks" ]
 	then
-		test_leaks $2 $3
+		test_leaks $2 $3 $4
 	else
-		test_normal $2 $3
+		test_normal $2 $3 $4
 	fi
 }
 
 function test_wide_chars {
 
-	for ((j=0;j<locale_count;j++))
-	do
-		test_normal $1 $2 ${locale_array[j]}
-	done
+	all_test "$1" "$2" "$3" "locale"
+	all_test "$1" "$2" "$3" 
+
 }
 
 make $debug_make -C .. -j -l 2.8 || exit 255
@@ -242,14 +244,21 @@ then
 	echo $((i%count_2))  $((${count_2} - 2))
 	exit 0
 fi
-rm $error_log_file
+if [ "$1" = "" ]
+then
+	rm $error_log_file
+elif [ "$1" = "leaks" ]
+then
+	rm $leaks_log_file
+fi
 for ((i=0;i<=count;i++))
 do
 	test_1=$((i%count_2)) 
 	test_2=$((${count_2} - 2))  
+	compile "${fmt_array[i]}" "${arg_array[$((i%count_2))]}"
 	if [ "$test_1" -ge "$test_2" ]
 	then
-		test_wide_chars "${fmt_array[i]}" "${arg_array[$((i%count_2))]}"
+		test_wide_chars "$1" "${fmt_array[i]}" "${arg_array[$((i%count_2))]}"
 	else
 		all_test "$1" "${fmt_array[i]}" "${arg_array[$((i%count_2))]}"
 	fi
