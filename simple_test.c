@@ -6,19 +6,19 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/10 10:57:43 by mgautier          #+#    #+#             */
-/*   Updated: 2017/03/28 14:12:47 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/04/08 13:59:46 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
 #include "libft.h"
+#include "printf.h"
 #include <stdio.h>
 #include <limits.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <locale.h>
 #ifndef FMT
-# define FMT "{%*3}"
+# define FMT "%d %d"
 #endif
 #ifndef ARG_LIST
 # define ARG_LIST 5, 1

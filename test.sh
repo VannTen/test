@@ -184,7 +184,7 @@ function compile {
 then
 	echo Bad compiling 
 	echo On fmt \"$1\" with args \($2\)
-	exit 255
+	exit 125
 fi
 }
 
@@ -194,6 +194,7 @@ function test_normal {
 		echo Failed >> $error_log_file
 		echo On fmt \"$1\" with args \($2\) >> $error_log_file
 		error=$((error + 1))
+		exit 1
 		mv a.out error.out
 	fi
 }
@@ -213,9 +214,10 @@ function test_leaks {
 	then
 		echo format string \"$1\" with args \($2\) causes leaks ! >> $leaks_log_file
 		leaks_count=$((leaks_count + 1))
+		exit 1
 	else
 		echo Error with leaks command
-		exit 255
+		exit 125
 	fi
 }
 function all_test {
