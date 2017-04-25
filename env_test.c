@@ -6,18 +6,19 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 20:01:05 by mgautier          #+#    #+#             */
-/*   Updated: 2017/04/24 20:13:44 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/04/25 12:28:15 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_interface.h"
+#include "libft.h"
 
-extern char **environ;
+const extern char **environ;
 
 int	main(int argc, char **argv)
 {
 	char		**env;
-	const char	*key;
+	char	*key;
 	const char	*value;
 	int	index;
 
